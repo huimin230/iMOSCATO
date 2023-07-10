@@ -4,14 +4,11 @@ Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>deling of <ins>S</ins>i
 
 ## Introduction
 
-**BayesCafe** is a Bayesian hierarchical model developed to analyze spatially resolved transcriptomics (SRT) data. It directly models the molecular profile of SRT
-data via a zero-inflated negative binomial (ZINB) model, and utilizes a feature selection
-approach that offers low-dimensional representations of the SRT data in terms of a list
-of discriminating genes. BayesCafe employs an Markov random field prior to integrate the geospatial profile of SRT data to improve clustering accuracy. 
+**iMOSCATO** is a fully Bayesian model that integrates spatial transcriptomics data and single-cell RNA sequencing (scRNA-seq) data to decompose cell-type mixtures of regularly distributed spots and identify the underlying spatial domains simultaneously. It incorporates the lattice structure by employing a Markov random field prior to improve the accuracy of cell-type deconvolution and spatial domain detection. Moreover, iMOSCATO employ a feature selection mechanism to improve the algorithm efficiency, while allowing the discovery of discriminating genes whose expression levels are significantly different among cell types.
 
 ![iMOSCATO](iMOSCATO.png)
 
-**BayesCafe** was developed and tested under `R 4.2.2`. The following R packages are required to run the model
+**iMOSCATO** was developed and tested under `R 4.2.3`. The following R packages are required to run the model
 
 - Rcpp
 - RcppArmadillo
@@ -21,11 +18,11 @@ of discriminating genes. BayesCafe employs an Markov random field prior to integ
 - scuttle
 - scran
 
-## Run BOOST-GP on demo data
+## Run iMOSCATO on demo data
 
 The following section will guide to run a exemplary data using **BayesCafe**.
 
-### Load BayesCafe and demo data
+### Load iMOSCATO and demo data
 ```r
 source("R/BayesCafe.R")
 load("data/demo_Data.Rdata")
