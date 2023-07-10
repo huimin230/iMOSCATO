@@ -72,6 +72,8 @@ res <- bayes_cafe(
   P = P)
 ```
 
+### Decompose cell type
+
 ### Identify the discriminating genes
 The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
 To obtain discriminating genes, we can check their marginal posterior probabilities
