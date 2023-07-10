@@ -1,6 +1,6 @@
-# BayesCafe
+# iMOSCATO
 
-An Interpretable <ins>Bayes</ins>ian <ins>c</ins>lustering <ins>a</ins>pproach with <ins>f</ins>eature s<ins>e</ins>lection for analyzing spatially resolved transcriptomics data
+Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>deling of <ins>S</ins>ingle <ins>C</ins>ell and Sp<ins>A</ins>tial <ins>T</ins>ranscript<ins>O</ins>mics Data
 
 ## Introduction
 
@@ -9,7 +9,7 @@ data via a zero-inflated negative binomial (ZINB) model, and utilizes a feature 
 approach that offers low-dimensional representations of the SRT data in terms of a list
 of discriminating genes. BayesCafe employs an Markov random field prior to integrate the geospatial profile of SRT data to improve clustering accuracy. 
 
-![BayesCafe](BayesCafe.png)
+![iMOSCATO](iMOSCATO.png)
 
 **BayesCafe** was developed and tested under `R 4.2.2`. The following R packages are required to run the model
 
