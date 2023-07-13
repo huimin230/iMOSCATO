@@ -13,10 +13,13 @@ Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>deling of <ins>S</ins>i
 - Rcpp
 - RcppArmadillo
 - RcppDist
-- mclust
 - SingleCellExperiment
+- Seurat
+- igraph
+- edgeR
 - scuttle
 - scran
+- mcclust
 
 ## Run iMOSCATO on demo data
 
