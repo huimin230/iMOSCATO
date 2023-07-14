@@ -1,0 +1,5 @@
+"data","method","metrics","value"
+"mouse_visual_cortex","RCTD","RMSE",0.141369711169789
+"mouse_visual_cortex","RCTD","PCC",0.764651239813601
+"mouse_visual_cortex","RCTD","ARI",0.534594596297116
+"mouse_visual_cortex","RCTD","time",123.208
