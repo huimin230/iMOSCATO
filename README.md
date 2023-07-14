@@ -138,7 +138,24 @@ print(p1)
 ```
 <img src="figure/imoscato_prop.png" alt="prop" width="325" height="300">
 
-### Identify the discriminating genes
+### Identify spatial domains
+The estimated spatial domains is stored in `iMOSCATO.object@domain`.
+
+```r
+head(res$cluster)
+                   x      y     cluster
+16.92 x 9.015   16.920  9.015       1
+16.945 x 11.075 16.945 11.075       1
+16.97 x 10.118  16.970 10.118       1
+16.939 x 12.132 16.939 12.132       1
+16.949 x 13.055 16.949 13.055       1
+16.942 x 15.088 16.942 15.088       1
+
+plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "steelblue3"))
+```
+<img src="cluster.png" alt="cluster" width="500" height="300">
+
+### Detect discriminating genes
 The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
 To obtain discriminating genes, we can check their marginal posterior probabilities
 of inclusion (PPI). Then, the discriminating genes are identified
@@ -177,19 +194,3 @@ head(res$gamma[res$gamma$PPI > 1 - threshod, ])
 sum(res$gamma$PPI > 1 - threshod)
 [1] 15
 ```
-
-
-### Visualize the clustering results
-```r
-head(res$cluster)
-                   x      y     cluster
-16.92 x 9.015   16.920  9.015       1
-16.945 x 11.075 16.945 11.075       1
-16.97 x 10.118  16.970 10.118       1
-16.939 x 12.132 16.939 12.132       1
-16.949 x 13.055 16.949 13.055       1
-16.942 x 15.088 16.942 15.088       1
-
-plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "steelblue3"))
-```
-<img src="cluster.png" alt="cluster" width="500" height="300">
