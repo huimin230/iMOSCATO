@@ -84,15 +84,15 @@ We run iMOSCATO using `run.iMOSCATO` function. The essential inputs are:
 - burn: a number indicating the number of burn-in iterations. Default is `2500`.
 
 ```r
-st_count <- iMOSCATO.object@st_count
-n <- nrow(st_count)
-p <- ncol(st_count)
-D <- 2
+st_count = iMOSCATO.object@st_count
+n = nrow(st_count)
+p = ncol(st_count)
+D = 2
 set.seed(12345)
-z <- as.numeric(kmeans(st_count, centers = D)$cluster)-1
-gamma <- rep(0, p)
+z = as.numeric(kmeans(st_count, centers = D)$cluster)-1
+gamma = rep(0, p)
 
-iMOSCATO.object <- run.iMOSCATO(
+iMOSCATO.object = run.iMOSCATO(
   iMOSCATO.object = iMOSCATO.object, 
   z = z, 
   gamma = gamma,
@@ -128,7 +128,7 @@ head(iMOSCATO.object@proportion)
 ```
 We can visualize the cell type proportion matrix through scatterpie plot via `CARD.visualize.pie` function in R package `CARD`.
 ```r
-p1 <- CARD::CARD.visualize.pie(proportion = iMOSCATO.object@proportion, 
+p1 = CARD::CARD.visualize.pie(proportion = iMOSCATO.object@proportion, 
                    spatial_location = iMOSCATO.object@loc, 
                    colors = colors) +
   theme(legend.title=element_text(size = 8),
@@ -156,25 +156,27 @@ plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "s
 <img src="cluster.png" alt="cluster" width="500" height="300">
 
 ### Detect discriminating genes
-The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
-To obtain discriminating genes, we can check their marginal posterior probabilities
-of inclusion (PPI). Then, the discriminating genes are identified
+To obtain discriminating genes, we can check their marginal posterior probabilities of inclusion (PPI). Then, the discriminating genes are identified
 if their PPI values exceed a given threshold $c$, $c$ = 0.5, which is commonly referred to as the median model.
 
-Alternatively, we can determine the threshold that controls for multiplicity, which ensures that the expected Bayesian false discovery rate (BFDR) is less than a
-specified value (e.g. 0.05). 
+The estimated PPI is stored in `iMOSCATO.object@PPI`.
 
 ```r
 ## Identified discriminating genes using c = 0.5
-head(res$gamma[res$gamma$PPI >= 0.5, ])
-      gene PPI
-7   gene 7   1
-17 gene 17   1
-20 gene 20   1
-36 gene 36   1
-40 gene 40   1
-46 gene 46   1
+PPI = iMOSCATO.object@PPI
+res = iMOSCATO.object@mcmc_result
+feature = data.frame("gene" = colnames(st_count), "PPI" = PPI)
 
-sum(res$gamma$PPI >= 0.5)
-[1] 15
+head(feature[feature$PPI >= 0.5, ])
+     gene  PPI
+3   Gene3 1.00
+5   Gene5 1.00
+6   Gene6 0.66
+10 Gene10 1.00
+32 Gene32 1.00
+41 Gene41 1.00
+
+## Number of detected discriminting genes
+sum(PPI >= 0.5)
+[1] 12
 ```
