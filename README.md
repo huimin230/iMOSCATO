@@ -23,27 +23,30 @@ Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>deling of <ins>S</ins>i
 
 ## Run iMOSCATO on demo data
 
-The following section will guide to run a exemplary data using **BayesCafe**.
+The following section will guide to run a exemplary data using **iMOSCATO**.
 
 ### Load iMOSCATO and demo data
 ```r
-source("R/BayesCafe.R")
-load("data/demo_Data.Rdata")
+source("R/imoscato.R")
+load("data/demo.Rdata")
 ```
 
-### Data preprocessing
-Before running the model, we need to perform data preprocessing and generate required inputs for running the model, the essential inputs are:
+### Create an iMOSCATO object
+The iMOSCATO object is created by the function `create.iMOSCATO`. The essential inputs are:
 
-- count: a matrix of raw SRT count data, each row represents a spatial location 
-and each column represents a gene.
-- loc: a matrix  with two columns representing the x and y coordinates of the spatial location.
-- cutoff_sample: a number indicating that spatial locations are kept with at least this number of total counts across all genes. Default is 100.
-- cutoff_feature: a number indicating that genes are kept with at least this percent of spatial locations with non-zero counts. Default is 0.1.
-- cutoff_max: a number indicating that genes are kept with at least this number of maximum counts across all spatial locations. Default is 0.
-- size.factor: a character string specifying method to calculate sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. Default is `tss`.
-- platform: a character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`).
-- findHVG: a logical indicating whether to find the highly variable genes. Default is `FALSE`.
-- n.HVGs: a number indicating number of highly variable genes to be detected. Default is 2000.
+- sc_count: a matrix of raw scRNA-seq count data, each row represents a cell and each column represents a gene. This sc_count data serves as a reference for the cell type deconvolution for spatial transcriptomics data.
+- sc_meta: a data frame of scRNA-seq metadata data. The sc_meta data must contain the column indicating the cell type assignment for each cell (e.g., `cellType` column in the example sc_meta data).
+- st_count: a matrix of raw spatial transcriptomics count data, each row represents a spot and each column represents a gene. This is the spatial transcriptomics data that we are interested to deconvolute.
+- loc: a data frame with two columns representing the $x$ and $y$ coordinates of the spot.
+- cutoff_sample: a number indicating that spots are kept with at least this number of total counts across all genes. Default is 100.
+- cutoff_feature: a number indicating that genes are kept with at least this percent of spots with non-zero counts. Default is 0.1.
+- norm_method: a character string specifying the method to calculate the sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. Default is `tss`.
+- findHVG: a logical variable indicating whether to find the highly variable genes. Default is `FALSE`.
+- n.HVGs: a number indicating the number of highly variable genes to be selected. Default is `2000`.
+- downsampling: a logical variable indicating whether to perform cell downsampling of scRNA-seq data. Default is `TRUE`.
+- size: a way to select the representative cells in downsampling, must be a percent (select same percent for each cell type), a positive integer (select certain number of cells, then each selected cell type will have the similar percent as the orginal data), a percent vector (select desired percent for each cell type), or a positive integer vector (select desired number of cells for each cell type). Default is `0.1`.
+- platform: a character string specifying the ST technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`). Default is `ST`.
+
 
 ```r
 result <- dataPreprocess(
