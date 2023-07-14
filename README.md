@@ -26,16 +26,21 @@ Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>deling of <ins>S</ins>i
 The following section will guide to run a exemplary data using **iMOSCATO**.
 
 ### Load iMOSCATO and demo data
+**iMOSCATO** requires two types of input data:
+
+1. scRNA-seq count data, along with meta information indicating the cell type information for each cell.
+2. Spatial transcriptomics count data, along with spatial location information.
+   
 ```r
 source("R/imoscato.R")
 load("data/demo.Rdata")
 ```
 
-### Create an iMOSCATO object
-The iMOSCATO object is created by the function `create.iMOSCATO`. The essential inputs are:
+### Create iMOSCATO object
+The iMOSCATO object is created by the `create.iMOSCATO` function. The essential inputs are:
 
 - sc_count: a matrix of raw scRNA-seq count data, each row represents a cell and each column represents a gene. This sc_count data serves as a reference for the cell type deconvolution for spatial transcriptomics data.
-- sc_meta: a data frame of scRNA-seq metadata data. The sc_meta data must contain the column indicating the cell type assignment for each cell (e.g., `cellType` column in the example sc_meta data).
+- sc_meta: a data frame of scRNA-seq meta data. The sc_meta data must contain the column indicating the cell type assignment for each cell (e.g., `cellType` column in the example sc_meta data).
 - st_count: a matrix of raw spatial transcriptomics count data, each row represents a spot and each column represents a gene. This is the spatial transcriptomics data that we are interested to deconvolute.
 - loc: a data frame with two columns representing the $x$ and $y$ coordinates of the spot.
 - cutoff_sample: a number indicating that spots are kept with at least this number of total counts across all genes. Default is 100.
@@ -49,36 +54,80 @@ The iMOSCATO object is created by the function `create.iMOSCATO`. The essential 
 
 
 ```r
-result <- dataPreprocess(
-  count = count, 
-  loc = loc, 
+iMOSCATO.object <- create.iMOSCATO(
+  sc_count = sc_count, 
+  sc_meta = sc_meta, 
+  st_count = st_count, 
+  loc = loc,
   cutoff_sample = 100, 
-  cutoff_feature = 0.1, 
-  cutoff_max = 0, 
-  size.factor = "tss", 
-  platform = "ST",
+  cutoff_feature = 0.1,
+  norm_method = "tss", 
   findHVG = FALSE, 
-  n.HVGs=2000)
+  n.HVGs=2000, 
+  downsampling = FALSE, 
+  size = 0.1, 
+  platform = "ST")
 
-count <- result$count
-loc <- result$loc
-s <- result$s
-P <- result$P
+## QC on scRNA-seq data! 
+## QC on ST data! 
+## Merge scRNA-seq data and ST data by common genes! 
+## Joint calculation of sample-specific size factor! 
+## Construct neighbor structure using ST geospatial profile!
 ```
 
-### Run the model
-We run the model using function `bayes_cafe`, where `K` is the specified number of clusters.
+### Run iMOSCATO
+We run iMOSCATO using `run.iMOSCATO` function. The essential inputs are:
+
+- iMOSCATO.object: iMOSCATO object created by `create.iMOSCATO` function.
+- z: a vector of non-negative integers indicating the initial values of spatial domains. Starting from 0 and ending by D-1, where D is the specified number of spatial domains.
+- iter: a number indicating the total number of iterations. Default is `5000`.
+- burn: a number indicating the number of burn-in iterations. Default is `2500`.
 
 ```r
-res <- bayes_cafe(
-  count = count, 
-  loc = loc, 
-  K = 2, 
-  s = s, 
-  P = P)
+n <- nrow(st_count)
+p <- ncol(st_count)
+D <- 2   
+z <- sample(0:(D-1),n, replace = TRUE)
+gamma <- rep(0, p)
+
+iMOSCATO.object <- run.iMOSCATO(
+  iMOSCATO.object = iMOSCATO.object, 
+  z = z, 
+  gamma = gamma,
+  iter = 5000,
+  burn = 2500)
+
+## iMOSCATO starts! 
+10% has been done
+20% has been done
+30% has been done
+40% has been done
+50% has been done
+60% has been done
+70% has been done
+80% has been done
+90% has been done
+100% has been done
+## iMOSCATO finishs! Run time is 144 seconds!
 ```
 
-### Decompose cell type
+### Deconvolute cell types
+The estimated cell type proportions is stored in iMOSCATO.object@proportion.
+
+```r
+n <- nrow(st_count)
+p <- ncol(st_count)
+D <- 2   
+z <- sample(0:(D-1),n, replace = TRUE)
+gamma <- rep(0, p)
+
+iMOSCATO.object <- run.iMOSCATO(
+  iMOSCATO.object = iMOSCATO.object, 
+  z = z, 
+  gamma = gamma,
+  iter = 5000,
+  burn = 2500)
+```
 
 ### Identify the discriminating genes
 The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
