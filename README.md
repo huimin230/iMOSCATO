@@ -79,23 +79,25 @@ iMOSCATO.object <- create.iMOSCATO(
 We run iMOSCATO using `run.iMOSCATO` function. The essential inputs are:
 
 - iMOSCATO.object: iMOSCATO object created by `create.iMOSCATO` function.
-- z: a vector of non-negative integers indicating the initial values of spatial domains. Starting from 0 and ending by D-1, where D is the specified number of spatial domains.
+- z: a vector of non-negative integers indicating the initial assignments of spatial domains. Starting from 0 and ending by D-1, where D is the specified number of spatial domains. It's can be obtained via K-means clustering or other clustering methods.
 - iter: a number indicating the total number of iterations. Default is `5000`.
 - burn: a number indicating the number of burn-in iterations. Default is `2500`.
 
 ```r
+st_count <- iMOSCATO.object@st_count
 n <- nrow(st_count)
 p <- ncol(st_count)
-D <- 2   
-z <- sample(0:(D-1),n, replace = TRUE)
+D <- 2
+set.seed(12345)
+z <- as.numeric(kmeans(st_count, centers = D)$cluster)-1
 gamma <- rep(0, p)
 
 iMOSCATO.object <- run.iMOSCATO(
   iMOSCATO.object = iMOSCATO.object, 
   z = z, 
   gamma = gamma,
-  iter = 5000,
-  burn = 2500)
+  iter = 2000,
+  burn = 1000)
 
 ## iMOSCATO starts! 
 10% has been done
@@ -108,26 +110,33 @@ iMOSCATO.object <- run.iMOSCATO(
 80% has been done
 90% has been done
 100% has been done
-## iMOSCATO finishs! Run time is 144 seconds!
+## iMOSCATO finishs! Run time is 86 seconds!
 ```
 
 ### Deconvolute cell types
-The estimated cell type proportions is stored in iMOSCATO.object@proportion.
+The estimated cell type proportions is stored in `iMOSCATO.object@proportion`.
 
 ```r
-n <- nrow(st_count)
-p <- ncol(st_count)
-D <- 2   
-z <- sample(0:(D-1),n, replace = TRUE)
-gamma <- rep(0, p)
-
-iMOSCATO.object <- run.iMOSCATO(
-  iMOSCATO.object = iMOSCATO.object, 
-  z = z, 
-  gamma = gamma,
-  iter = 5000,
-  burn = 2500)
+head(iMOSCATO.object@proportion)
+                      1           2          3           4
+16.92x9.015   0.4832313 0.008696642 0.01621718 0.491854830
+16.945x11.075 0.1150856 0.066435593 0.24701273 0.571466085
+16.97x10.118  0.6029334 0.078404869 0.02135533 0.297306359
+16.939x12.132 0.5058377 0.146672161 0.28861165 0.058878472
+16.949x13.055 0.7072679 0.087942401 0.06644441 0.138345332
+16.942x15.088 0.4147395 0.092256369 0.49126307 0.001741032
 ```
+We can visualize the cell type proportion matrix through scatterpie plot via `CARD.visualize.pie` function in R package `CARD`.
+```r
+p1 <- CARD::CARD.visualize.pie(proportion = iMOSCATO.object@proportion, 
+                   spatial_location = iMOSCATO.object@loc, 
+                   colors = colors) +
+  theme(legend.title=element_text(size = 8),
+        legend.text=element_text(size = 8),
+        legend.box.spacing = unit(0, "pt"))
+print(p1)
+```
+![iMOSCATO](figure/imoscato_prop.png)
 
 ### Identify the discriminating genes
 The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
