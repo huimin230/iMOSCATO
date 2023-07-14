@@ -136,7 +136,7 @@ p1 <- CARD::CARD.visualize.pie(proportion = iMOSCATO.object@proportion,
         legend.box.spacing = unit(0, "pt"))
 print(p1)
 ```
-![iMOSCATO](figure/imoscato_prop.png)
+<img src="figure/imoscato_prop.png" alt="prop" width="325" height="300">
 
 ### Identify the discriminating genes
 The main purpose of **BayesCafe** is to identify discriminating genes and cluster spatial locations.
