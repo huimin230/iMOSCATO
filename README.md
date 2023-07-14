@@ -177,20 +177,4 @@ head(res$gamma[res$gamma$PPI >= 0.5, ])
 
 sum(res$gamma$PPI >= 0.5)
 [1] 15
-
-## Identified discriminating genes to control BFDR < 0.05
-(threshod <- bfdr(PPI = res$gamma$PPI, alpha = 0.05))
-[1] 0.9
-
-head(res$gamma[res$gamma$PPI > 1 - threshod, ])
-      gene PPI
-7   gene 7   1
-17 gene 17   1
-20 gene 20   1
-36 gene 36   1
-40 gene 40   1
-46 gene 46   1
-
-sum(res$gamma$PPI > 1 - threshod)
-[1] 15
 ```
