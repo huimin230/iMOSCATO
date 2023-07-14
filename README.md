@@ -142,18 +142,23 @@ print(p1)
 The estimated spatial domains is stored in `iMOSCATO.object@domain`.
 
 ```r
-head(res$cluster)
-                   x      y     cluster
-16.92 x 9.015   16.920  9.015       1
-16.945 x 11.075 16.945 11.075       1
-16.97 x 10.118  16.970 10.118       1
-16.939 x 12.132 16.939 12.132       1
-16.949 x 13.055 16.949 13.055       1
-16.942 x 15.088 16.942 15.088       1
+domain = iMOSCATO.object@domain
+loc = iMOSCATO.object@loc
+data = cbind(loc, domain)
 
-plot.cluster(res$cluster, x, y, group = as.factor(cluster), colors = c("red", "steelblue3"))
+head(data)
+                   x      y domain
+16.92x9.015   16.920  9.015      1
+16.945x11.075 16.945 11.075      1
+16.97x10.118  16.970 10.118      1
+16.939x12.132 16.939 12.132      1
+16.949x13.055 16.949 13.055      1
+16.942x15.088 16.942 15.088      1
+
+p2 = plot.cluster(data, x, y, size = 2, domain = as.factor(domain), colors = c("red", "steelblue3"))
+print(p2)
 ```
-<img src="cluster.png" alt="cluster" width="500" height="300">
+<img src="imoscato_domain.png" alt="domain" width="500" height="300">
 
 ### Detect discriminating genes
 To obtain discriminating genes, we can check their marginal posterior probabilities of inclusion (PPI). Then, the discriminating genes are identified
