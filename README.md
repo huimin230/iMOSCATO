@@ -84,18 +84,16 @@ We run iMOSCATO using `run.iMOSCATO` function. The essential inputs are:
 - burn: a number indicating the number of burn-in iterations. Default is `2500`.
 
 ```r
-st_count = iMOSCATO.object@st_count
-n = nrow(st_count)
-p = ncol(st_count)
 D = 2
 set.seed(12345)
-z = as.numeric(kmeans(st_count, centers = D)$cluster)-1
-gamma = rep(0, p)
+z = as.numeric(kmeans(iMOSCATO.object@st_count, centers = D)$cluster)-1
 
 iMOSCATO.object = run.iMOSCATO(
   iMOSCATO.object = iMOSCATO.object, 
   z = z, 
-  gamma = gamma,
+  sc_nb = TRUE, 
+  st_nb = TRUE, 
+  find_domain = TRUE,
   iter = 2000,
   burn = 1000)
 
@@ -117,14 +115,16 @@ iMOSCATO.object = run.iMOSCATO(
 The estimated cell type proportions is stored in `iMOSCATO.object@proportion`.
 
 ```r
-head(iMOSCATO.object@proportion)
-                      1           2          3           4
-16.92x9.015   0.4832313 0.008696642 0.01621718 0.491854830
-16.945x11.075 0.1150856 0.066435593 0.24701273 0.571466085
-16.97x10.118  0.6029334 0.078404869 0.02135533 0.297306359
-16.939x12.132 0.5058377 0.146672161 0.28861165 0.058878472
-16.949x13.055 0.7072679 0.087942401 0.06644441 0.138345332
-16.942x15.088 0.4147395 0.092256369 0.49126307 0.001741032
+prop <- iMOSCATO.object@proportion
+colnames(prop) <- paste0("Cell type ", 1:4)
+head(prop)
+              Cell type 1 Cell type 2 Cell type 3  Cell type 4
+16.92x9.015     0.9699983 0.009222648  0.01496042 0.0058185899
+16.945x11.075   0.1586566 0.292325599  0.53811212 0.0109056881
+16.97x10.118    0.8999953 0.051818286  0.04767275 0.0005136645
+16.939x12.132   0.8109649 0.017989981  0.08664395 0.0844012134
+16.949x13.055   0.6669310 0.125455153  0.19360721 0.0140066167
+16.942x15.088   0.9084850 0.028643868  0.06050811 0.0023630713
 ```
 We can visualize the cell type proportion matrix through scatterpie plot via `CARD.visualize.pie` function in R package `CARD`.
 ```r
@@ -147,7 +147,7 @@ loc = iMOSCATO.object@loc
 data = cbind(loc, domain)
 
 head(data)
-                   x      y domain
+                    x      y domain
 16.92x9.015   16.920  9.015      1
 16.945x11.075 16.945 11.075      1
 16.97x10.118  16.970 10.118      1
@@ -173,15 +173,15 @@ res = iMOSCATO.object@mcmc_result
 feature = data.frame("gene" = colnames(st_count), "PPI" = PPI)
 
 head(feature[feature$PPI >= 0.5, ])
-     gene  PPI
-3   Gene3 1.00
-5   Gene5 1.00
-6   Gene6 0.66
-10 Gene10 1.00
-32 Gene32 1.00
-41 Gene41 1.00
+     gene PPI
+1   Gene1   1
+4   Gene4   1
+5   Gene5   1
+6   Gene6   1
+9   Gene9   1
+19 Gene19   1
 
 ## Number of detected discriminting genes
 sum(PPI >= 0.5)
-[1] 12
+[1] 10
 ```
