@@ -79,9 +79,12 @@ iMOSCATO.object <- create.iMOSCATO(
 We run iMOSCATO using `run.iMOSCATO` function. The essential inputs are:
 
 - iMOSCATO.object: iMOSCATO object created by `create.iMOSCATO` function.
-- z: a vector of non-negative integers indicating the initial assignments of spatial domains. Starting from 0 and ending by D-1, where D is the specified number of spatial domains. It's can be obtained via K-means clustering or other clustering methods.
-- iter: a number indicating the total number of iterations. Default is `5000`.
-- burn: a number indicating the number of burn-in iterations. Default is `2500`.
+- z: a vector of non-negative integers indicating the initial assignments of spatial domains. Starting from 0 and ending by D-1, where D is the specified number of spatial domains. It's can be obtained via K-means clustering or other clustering methods if find_domian is `FALSE`.
+- sc_nb: a logical variable indicating whether to model scRNA-seq count data using Negative Binomial model. FALSE for Poisson model. Default is `TRUE`.
+- st_nb: a logical variable indicating whether to model ST count data using Negative Binomial model. FALSE for Poisson model. Default is `TRUE`.
+- find_domain: a logical variable indicating whether to identify spatial domains. If `FALSE`, z is input as the ground truth of spatial domain assignment or is found by other clustering method. Default is `TRUE`.
+- iter: a number indicating the total number of iterations. Default is `2000`.
+- burn: a number indicating the number of burn-in iterations. Default is `1000`.
 
 ```r
 D = 2
