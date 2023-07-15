@@ -158,7 +158,7 @@ head(data)
 p2 = plot.cluster(data, x, y, size = 2, domain = as.factor(domain), colors = c("red", "steelblue3"))
 print(p2)
 ```
-<img src="figure/imoscato_domain.png" alt="domain" width="333" height="200">
+<img src="figure/imoscato_domain.png" alt="domain" width="400" height="240">
 
 ### Detect discriminating genes
 To obtain discriminating genes, we can check their marginal posterior probabilities of inclusion (PPI). Then, the discriminating genes are identified
