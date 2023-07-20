@@ -141,28 +141,6 @@ print(p1)
 ```
 <img src="figure/imoscato_prop.png" alt="prop" width="325" height="300">
 
-### Identify spatial domains
-The estimated spatial domains is stored in `iMOSCATO.object@domain`.
-
-```r
-domain = iMOSCATO.object@domain
-loc = iMOSCATO.object@loc
-data = cbind(loc, domain)
-
-head(data)
-                    x      y domain
-16.92x9.015   16.920  9.015      1
-16.945x11.075 16.945 11.075      1
-16.97x10.118  16.970 10.118      1
-16.939x12.132 16.939 12.132      1
-16.949x13.055 16.949 13.055      1
-16.942x15.088 16.942 15.088      1
-
-p2 = plot.cluster(data, x, y, size = 2, domain = as.factor(domain), colors = c("red", "steelblue3"))
-print(p2)
-```
-<img src="figure/imoscato_domain.png" alt="domain" width="400" height="240">
-
 ### Detect discriminating genes
 To obtain discriminating genes, we can check their marginal posterior probabilities of inclusion (PPI). Then, the discriminating genes are identified
 if their PPI values exceed a given threshold $c$, $c$ = 0.5, which is commonly referred to as the median model.
