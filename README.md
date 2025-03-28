@@ -150,7 +150,7 @@ We can visualize the spatial domains via `plot.domain` function.
 p <- plot.domain(domain_result[,c("x","y")], size = 2, domain = domain_result$domain, colors = c("red", "steelblue3"))
 print(p)
 ```
-<img src="figure/imoscato_domain.png" alt="prop" width="325" height="250">
+<img src="figure/imoscato_domain.png" alt="prop" width="325" height="200">
 
 
 
