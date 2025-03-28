@@ -124,7 +124,7 @@ p1 = CARD::CARD.visualize.pie(proportion = iMOSCATO.object@proportion,
         legend.box.spacing = unit(0, "pt"))
 print(p1)
 ```
-<img src="figure/imoscato_prop.png" alt="prop" width="325" height="300">
+<img src="figure/imoscato_prop.png" alt="prop" width="325" height="250">
 
 ### Detect discriminating genes
 To obtain discriminating genes, we can check their marginal posterior probabilities of inclusion (PPI). Then, the discriminating genes are identified
