@@ -4,7 +4,7 @@ Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>deling of <ins>S</ins>i
 
 ## Introduction
 
-**iMOSCATO** is a Bayesian model that integrates single-cell RNA sequencing (scRNA-seq) and spatially resolved transcriptomics (SRT) data to to simultaneously decompose cell-type compositions of regularly distributed spots and identify the underlying spatial domains. It incorporates the lattice structure by employing a zero-inflated Dirichlet distribution to capture cell-type sparsity.
+**iMOSCATO** is a fully Bayesian model that integrates single-cell RNA sequencing (scRNA-seq) and spatially resolved transcriptomics (SRT) data to to simultaneously decompose cell-type compositions of regularly distributed spots and identify the underlying spatial domains. It incorporates the lattice structure by employing a Markov random field prior, improving the accuracy of both cell-type deconvolution and spatial domain detection. Moreover, iMOSCATO employs a zero-inflated Dirichlet distribution to capture cell-type sparsity.
 
 ![iMOSCATO](figure/imoscato_workflow.png)
 
