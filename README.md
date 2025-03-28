@@ -99,7 +99,7 @@ iMOSCATO.object = run.iMOSCATO(
 ## iMOSCATO finishs! Run time is 22 seconds!
 ```
 
-### Deconvolute cell types
+### Cell-type deconvolution
 The estimated cell type proportions is stored in `iMOSCATO.object$result$prop_result`.
 
 ```r
@@ -115,39 +115,42 @@ head(prop_result)
 17x15 0.8151836 0.0000000 0.1145933 0.07022304
 ```
 We can visualize the cell type proportion matrix through scatterpie plot via `CARD.visualize.pie` function in R package `CARD`.
+
 ```r
-p1 = CARD::CARD.visualize.pie(proportion = iMOSCATO.object@proportion, 
-                   spatial_location = iMOSCATO.object@loc, 
+colors = c("#6E98FF", "#7FC97F", "#E7298A", "#FFD92F")
+colnames(prop_result) <- 1:4
+p = CARD::CARD.visualize.pie(proportion = prop_result, 
+                   spatial_location = iMOSCATO.object$object@loc,
                    colors = colors) +
   theme(legend.title=element_text(size = 8),
         legend.text=element_text(size = 8),
-        legend.box.spacing = unit(0, "pt"))
-print(p1)
+        legend.box.spacing = unit(0, "pt")) 
+print(p)
 ```
 <img src="figure/imoscato_prop.png" alt="prop" width="325" height="250">
 
-### Detect discriminating genes
-To obtain discriminating genes, we can check their marginal posterior probabilities of inclusion (PPI). Then, the discriminating genes are identified
-if their PPI values exceed a given threshold $c$, $c$ = 0.5, which is commonly referred to as the median model.
-
-The estimated PPI is stored in `iMOSCATO.object@PPI`.
+### Spatial domain detection
+The estimated spatial domian labels is stored in `iMOSCATO.object$result$domain_result`.
 
 ```r
-## Identified discriminating genes using c = 0.5
-PPI = iMOSCATO.object@PPI
-res = iMOSCATO.object@mcmc_result
-feature = data.frame("gene" = colnames(st_count), "PPI" = PPI)
+domain_result = iMOSCATO.object$result$domain_result
+head(domain_result)
 
-head(feature[feature$PPI >= 0.5, ])
-     gene PPI
-1   Gene1   1
-4   Gene4   1
-5   Gene5   1
-6   Gene6   1
-9   Gene9   1
-19 Gene19   1
-
-## Number of detected discriminting genes
-sum(PPI >= 0.5)
-[1] 10
+           x      y domain domain_map dominant_type
+17x9  16.920  9.015      1          1     cellType1
+17x11 16.945 11.075      1          1     cellType4
+17x10 16.970 10.118      1          1     cellType1
+17x12 16.939 12.132      1          1     cellType1
+17x13 16.949 13.055      1          1     cellType1
+17x15 16.942 15.088      1          1     cellType1
 ```
+We can visualize the spatial domains via `plot.domain` function.
+
+```r
+p <- plot.domain(domain_result[,c("x","y")], size = 2, domain = domain_result$domain, colors = c("red", "steelblue3"))
+print(p)
+```
+<img src="figure/imoscato_domain.png" alt="prop" width="325" height="250">
+
+
+
