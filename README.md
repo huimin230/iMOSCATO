@@ -84,7 +84,7 @@ The essential inputs and preprocessing arguments are:
 - sc_meta: a data frame containing scRNA-seq metadata. It must include a column indicating the cell-type assignment for each cell, such as the `cellType` column in the demo data.
 - st_count: a matrix of raw SRT count data, each row represents a spatial spot and each column represents a gene. This is the SRT data that we are interested to deconvolute.
 - loc: a data frame with two columns representing the $x$ and $y$ coordinates of each spatial spot.
-- cutoff_sample: a number indicating that spots are kept with at least this number of total counts across all genes. The efault is 100.
+- cutoff_sample: a number indicating that spots are kept with at least this number of total counts across all genes. The default is 100.
 - cutoff_feature: a number indicating that genes are kept with at least this percent of spots with non-zero counts. The default is 0.1.
 - norm_method: a character string specifying the method to calculate the sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. The default is `tss`.
 - platform: a character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`). The default is `ST`.
