@@ -8,7 +8,9 @@ A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>in
 
 ![iMOSCATO](figure/imoscato_workflow.png)
 
-**iMOSCATO** was developed and tested under `R 4.5.1`. The following R packages are required to run the model
+## Software requirements
+
+**iMOSCATO** was developed and tested under `R 4.5.1`. The following R packages are required:
 
 - Rcpp
 - RcppArmadillo
@@ -30,20 +32,48 @@ A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>in
 - CARD
 - mclust
 
-## Run iMOSCATO on demo data
-
-The following section will guide to run a exemplary data using **iMOSCATO**.
-
-### Load iMOSCATO and demo data
+## Data preparation and required input format
 **iMOSCATO** requires two types of input data:
 
-1. scRNA-seq count data, along with meta information indicating the cell type information for each cell.
-2. Spatial transcriptomics count data, along with spatial location information.
-   
+1. scRNA-seq reference data, including a raw count matrix and cell-type annotations.
+2. Spatial transcriptomics data, including a raw count matrix and spatial coordinates.
+
+For datasets downloaded from GEO or other public repositories, users should first extract the corresponding count matrices, cell-type annotation information, and spatial-coordinate information and organize them into the following four inputs required by iMOSCATO:
+
+sc_count: a matrix of raw scRNA-seq counts, where each row represents a cell and each column represents a gene.
+sc_meta: a data frame containing metadata for the scRNA-seq cells. It must contain a column specifying the cell-type annotation for each cell.
+st_count: a matrix of raw SRT counts, where each row represents a spatial spot and each column represents a gene.
+loc: a data frame containing two columns representing the spatial x and y coordinates of each spot.
+
+The cell identifiers in sc_count should correspond to those in sc_meta, and the spot identifiers in st_count should correspond to those in loc. Gene identifiers should also be consistently formatted between the scRNA-seq and SRT datasets.
+
+The demo dataset included in this repository provides an example of the required structure and format of these four inputs and can be used as a template when preparing data downloaded from GEO or other public repositories.
+
+Users do not need to normalize the count matrices before creating the iMOSCATO object. The major preprocessing steps are performed internally by the create.iMOSCATO function.
+
+## Preprocessing performed by iMOSCATO
+
+After the four required inputs are prepared, `create.iMOSCATO` performs the main preprocessing steps automatically, including:
+
+1. Quality control of the scRNA-seq data.
+2. Quality control of the SRT data.
+3. Matching genes between the scRNA-seq and SRT datasets.
+4. Calculation of sample-specific size factors.
+5. Construction of the reference basis matrix from the scRNA-seq data.
+6. Construction of the spatial-neighbor structure using the SRT spatial coordinates.
+
+The corresponding filtering and preprocessing options can be controlled through the arguments of `create.iMOSCATO`, as described below.
+
+## Run iMOSCATO on demo data
+The following example illustrates how to run iMOSCATO using the demo dataset provided in this repository.
+
+### Load iMOSCATO and demo data
+
 ```r
 source("R/imoscato.R")
 load("data/demo.Rdata")
 ```
+The demo data contain the four required inputs: `sc_count`, `sc_meta`, `st_count`, and `loc`.
 
 ### Create iMOSCATO object
 The iMOSCATO object is created by the `create.iMOSCATO` function. The essential inputs are:
