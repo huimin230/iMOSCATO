@@ -28,6 +28,7 @@ A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>in
 - scatterpie
 - ggpubr
 - CARD
+- mclust
 
 ## Run iMOSCATO on demo data
 
