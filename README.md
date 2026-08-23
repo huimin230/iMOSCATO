@@ -8,7 +8,7 @@ A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>in
 
 ![iMOSCATO](figure/imoscato_workflow.png)
 
-**iMOSCATO** was developed and tested under `R 4.4.2`. The following R packages are required to run the model
+**iMOSCATO** was developed and tested under `R 4.5.1`. The following R packages are required to run the model
 
 - Rcpp
 - RcppArmadillo
