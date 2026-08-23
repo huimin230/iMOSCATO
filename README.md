@@ -23,6 +23,11 @@ A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>in
 - ggplot2
 - gridExtra
 - ggpubr
+- reshape2
+- gtools
+- scatterpie
+- ggpubr
+- CARD
 
 ## Run iMOSCATO on demo data
 
