@@ -76,16 +76,18 @@ load("data/demo.Rdata")
 The demo data contain the four required inputs: `sc_count`, `sc_meta`, `st_count`, and `loc`.
 
 ### Create iMOSCATO object
-The iMOSCATO object is created by the `create.iMOSCATO` function. The essential inputs are:
+Once the raw data have been organized into the required input formats, the iMOSCATO object can be created using the `create.iMOSCATO` function.
 
-- sc_count: a matrix of raw scRNA-seq count data, each row represents a cell and each column represents a gene. This sc_count data serves as a reference for the cell type deconvolution for SRT data.
-- sc_meta: a data frame of scRNA-seq meta data. The sc_meta data must contain the column indicating the cell type assignment for each cell (e.g., `cellType` column in the example sc_meta data).
-- st_count: a matrix of raw SRT count data, each row represents a spot and each column represents a gene. This is the SRT data that we are interested to deconvolute.
-- loc: a data frame with two columns representing the $x$ and $y$ coordinates of the spot.
-- cutoff_sample: a number indicating that spots are kept with at least this number of total counts across all genes. Default is 100.
-- cutoff_feature: a number indicating that genes are kept with at least this percent of spots with non-zero counts. Default is 0.1.
-- norm_method: a character string specifying the method to calculate the sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. Default is `tss`.
-- platform: a character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`). Default is `ST`.
+The essential inputs and preprocessing arguments are:
+
+- sc_count: a matrix of raw scRNA-seq count data, each row represents a cell and each column represents a gene. The scRNA-seq data serve as the reference for cell-type deconvolution of the SRT data.
+- sc_meta: a data frame containing scRNA-seq metadata. It must include a column indicating the cell-type assignment for each cell, such as the `cellType` column in the demo data.
+- st_count: a matrix of raw SRT count data, each row represents a spatial spot and each column represents a gene. This is the SRT data that we are interested to deconvolute.
+- loc: a data frame with two columns representing the $x$ and $y$ coordinates of each spatial spot.
+- cutoff_sample: a number indicating that spots are kept with at least this number of total counts across all genes. The efault is 100.
+- cutoff_feature: a number indicating that genes are kept with at least this percent of spots with non-zero counts. The default is 0.1.
+- norm_method: a character string specifying the method to calculate the sample-specific size factor, must be one of `tss`, `q75`, `rle`, or `tmm`. The default is `tss`.
+- platform: a character string specifying the SRT technology in order to construct neighbor structure, must be one of `ST`, `Visium`, or `other` (for any technologies other than `ST` and `10x Visium`). The default is `ST`.
 
 
 ```r
@@ -109,10 +111,10 @@ iMOSCATO.object <- create.iMOSCATO(
 ### Run iMOSCATO
 We run iMOSCATO using `run.iMOSCATO` function. The essential inputs are:
 
-- iMOSCATO.object: iMOSCATO object created by `create.iMOSCATO` function.
-- n.domain: Specified number of domains.
-- iter: a number indicating the total number of iterations. Default is `2000`.
-- burn: a number indicating the number of burn-in iterations. Default is `1000`.
+- iMOSCATO.object: the iMOSCATO object created by `create.iMOSCATO` function.
+- n.domain: the specified number of domains.
+- iter: a number indicating the total number of iterations. The default is `2000`.
+- burn: a number indicating the number of burn-in iterations. The default is `1000`.
 
 ```r
 iMOSCATO.object = run.iMOSCATO(
@@ -136,7 +138,7 @@ iMOSCATO.object = run.iMOSCATO(
 ```
 
 ### Cell-type deconvolution
-The estimated cell type proportions is stored in `iMOSCATO.object$result$prop_result`.
+The estimated cell-type proportions are stored in `iMOSCATO.object$result$prop_result`.
 
 ```r
 prop_result <- iMOSCATO.object$result$prop_result
@@ -150,7 +152,7 @@ head(prop_result)
 17x13 0.4055590 0.1122657 0.3510774 0.13109798
 17x15 0.8151836 0.0000000 0.1145933 0.07022304
 ```
-We can visualize the cell type proportion matrix through scatterpie plot via `CARD.visualize.pie` function in R package `CARD`.
+The estimated cell-type proportion matrix can be visualized using the `CARD.visualize.pie` function in R package `CARD`.
 
 ```r
 colors = c("#6E98FF", "#7FC97F", "#E7298A", "#FFD92F")
@@ -166,7 +168,7 @@ print(p)
 <img src="figure/imoscato_prop.png" alt="prop" width="325" height="250">
 
 ### Spatial domain detection
-The estimated spatial domian labels is stored in `iMOSCATO.object$result$domain_result`.
+The estimated spatial domian labels are stored in `iMOSCATO.object$result$domain_result`.
 
 ```r
 domain_result = iMOSCATO.object$result$domain_result
@@ -180,7 +182,7 @@ head(domain_result)
 17x13 16.949 13.055      1          1     cellType1
 17x15 16.942 15.088      1          1     cellType1
 ```
-We can visualize the spatial domains via `plot.domain` function.
+The estimated spatial domains can be visualized using the `plot.domain` function.
 
 ```r
 p <- plot.domain(domain_result[,c("x","y")], size = 2, domain = domain_result$domain, colors = c("red", "steelblue3"))
