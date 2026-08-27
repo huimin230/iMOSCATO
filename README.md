@@ -151,7 +151,7 @@ head(prop_result)
 17x13 0.4055590 0.1122657 0.3510774 0.13109798
 17x15 0.8151836 0.0000000 0.1145933 0.07022304
 ```
-The estimated cell-type proportion matrix can be visualized using the `CARD.visualize.pie` function in R package `CARD`.
+The estimated cell-type proportion matrix can be visualized using the `plot.pie` function.
 
 ```r
 colors = c("#6E98FF", "#7FC97F", "#E7298A", "#FFD92F")
