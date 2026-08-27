@@ -156,7 +156,7 @@ The estimated cell-type proportion matrix can be visualized using the `plot.pie`
 ```r
 colors = c("#6E98FF", "#7FC97F", "#E7298A", "#FFD92F")
 colnames(prop_result) <- 1:4
-p = CARD::CARD.visualize.pie(proportion = prop_result, 
+p = plot.pie(proportion = prop_result, 
                    spatial_location = iMOSCATO.object$object@loc,
                    colors = colors) +
   theme(legend.title=element_text(size = 8),
