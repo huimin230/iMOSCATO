@@ -29,7 +29,6 @@ A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>in
 - gtools
 - scatterpie
 - ggpubr
-- CARD
 - mclust
 
 ## Data preparation and required input format
