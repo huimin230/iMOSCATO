@@ -1,6 +1,6 @@
 # iMOSCATO
 
-A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>ingle <ins>C</ins>ell and Sp<ins>A</ins>tially Resolved <ins>T</ins>ranscript<ins>O</ins>mics Data
+A Bayesian <ins>i</ins>ntergrative <ins>M</ins><ins>O</ins>del of <ins>S</ins>ingle-<ins>C</ins>ell and Sp<ins>A</ins>tially Resolved <ins>T</ins>ranscript<ins>O</ins>mics Data
 
 ## Introduction
 
